@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import AuthPage from './pages/AuthPage';
+import HomePage from './pages/HomePage';
+import RoomPage from "./pages/RoomPage";
+import AdminPage from './pages/AdminPage';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<AuthPage />} />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/room" element={<RoomPage />} /> {/* Исправлено с /client на /room */}
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/admin/users" element={<div>Пользователи (в разработке)</div>} />
+                <Route path="/admin/client" element={<div>Клиенты (в разработке)</div>} />
+                <Route path="/admin/book" element={<div>Книги (в разработке)</div>} />
+                <Route path="/admin/author" element={<div>Авторы (в разработке)</div>} />
+                <Route path="/admin/bookcase" element={<div>Шкафы (в разработке)</div>} />
+                <Route path="/admin/shelf" element={<div>Полки (в разработке)</div>} />
+                <Route path="/books" element={<div>Библиотека (в разработке)</div>} />
+                <Route path="/author" element={<div>Авторы (в разработке)</div>} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
