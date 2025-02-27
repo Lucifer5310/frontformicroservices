@@ -8,6 +8,88 @@ const imageServiceApi = axios.create({
     baseURL: 'http://localhost:8081',
 });
 
+// Функция для декодирования JWT (взята из AuthPage, можно вынести в утилиты)
+const decodeJWT = (token) => {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(
+            atob(base64)
+                .split('')
+                .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+        );
+        return JSON.parse(jsonPayload);
+    } catch (error) {
+        console.error('Ошибка декодирования JWT:', error);
+        return {};
+    }
+};
+
+// Интерцептор для проверки и обновления токена перед запросом
+internshipApi.interceptors.request.use(
+    async (config) => {
+        let accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+            const decodedToken = decodeJWT(accessToken);
+            const expTime = decodedToken.exp * 1000; // В миллисекундах (JWT exp в секундах)
+            const currentTime = Date.now();
+            const timeLeft = expTime - currentTime;
+            const bufferTime = 5 * 60 * 1000; // 5 минут в миллисекундах
+
+            // Если токен истекает через менее чем 5 минут
+            if (timeLeft < bufferTime) {
+                const refreshToken = localStorage.getItem('refreshToken');
+                try {
+                    const response = await axios.post(
+                        'http://localhost:8080/auth/refresh',
+                        { refreshToken }
+                    ); // Используем axios напрямую, чтобы избежать рекурсии
+                    accessToken = response.data.accessToken;
+                    localStorage.setItem('accessToken', accessToken);
+                    console.log('Токен обновлён проактивно');
+                } catch (refreshError) {
+                    console.error('Ошибка обновления токена:', refreshError);
+                    localStorage.clear();
+                    window.location.href = '/';
+                    return Promise.reject(refreshError);
+                }
+            }
+            config.headers.Authorization = `Bearer ${accessToken}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
+// Интерцептор для обработки 401 (на случай, если токен всё же истёк)
+internshipApi.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            const refreshToken = localStorage.getItem('refreshToken');
+            try {
+                const response = await axios.post(
+                    'http://localhost:8080/auth/refresh',
+                    { refreshToken }
+                );
+                const newAccessToken = response.data.accessToken;
+                localStorage.setItem('accessToken', newAccessToken);
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                return internshipApi(originalRequest);
+            } catch (refreshError) {
+                console.error('Ошибка обновления токена:', refreshError);
+                localStorage.clear();
+                window.location.href = '/';
+                return Promise.reject(refreshError);
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
 //Auth
 export const signUp = () => internshipApi.post('/auth/sign-up');
 export const signIn = () => internshipApi.post('/auth/sign-in');
@@ -33,6 +115,7 @@ export const deleteBook = (id) => internshipApi.delete(`/book/${id}`);
 //ClientApi
 export const findAllClient = () => internshipApi.get('/client');
 export const addOneClient = () => internshipApi.post('/client');
+export const findClientById = (id) => internshipApi.get(`/client/${id}`);
 export const replaceClient = (id) => internshipApi.put(`/client/${id}`);
 export const deleteClient = (id) => internshipApi.delete(`/client/${id}`);
 
@@ -49,6 +132,7 @@ export const deleteShelf = (id) => internshipApi.delete(`/shelf/${id}`);
 
 //ImageApi
 export const getAllImagesMetadata = () => imageServiceApi.get('/images');
+export const deleteImage = (id) => imageServiceApi.delete(`/images/${id}`);
 export const getImage = (id) => imageServiceApi.get(`/images/${id}`, { responseType: 'blob' });
 export const uploadImage = (file) => {
     const formData = new FormData();
@@ -57,4 +141,3 @@ export const uploadImage = (file) => {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
-export const deleteImage = (id) => imageServiceApi.delete(`/images/${id}`);

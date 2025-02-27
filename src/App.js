@@ -4,6 +4,7 @@ import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
 import RoomPage from "./pages/RoomPage";
 import AdminPage from './pages/AdminPage';
+import AuthorPage from "./pages/AuthorPage";
 
 function App() {
     return (
@@ -11,7 +12,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<AuthPage />} />
                 <Route path="/home" element={<HomePage />} />
-                <Route path="/room" element={<RoomPage />} /> {/* Исправлено с /client на /room */}
+                <Route path="/client/:id" element={<RoomPage />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/users" element={<div>Пользователи (в разработке)</div>} />
                 <Route path="/admin/client" element={<div>Клиенты (в разработке)</div>} />
@@ -20,7 +21,7 @@ function App() {
                 <Route path="/admin/bookcase" element={<div>Шкафы (в разработке)</div>} />
                 <Route path="/admin/shelf" element={<div>Полки (в разработке)</div>} />
                 <Route path="/books" element={<div>Библиотека (в разработке)</div>} />
-                <Route path="/author" element={<div>Авторы (в разработке)</div>} />
+                <Route path="/author" element={<AuthorPage />} />
             </Routes>
         </Router>
     );

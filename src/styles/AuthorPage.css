@@ -1,0 +1,111 @@
+.author-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.left-section,
+.right-section {
+    display: flex;
+    gap: 15px;
+}
+
+.header-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.header-button:hover {
+    background-color: #0056b3;
+}
+
+.header-button.logout-button {
+    background-color: #dc3545;
+}
+
+.header-button.logout-button:hover {
+    background-color: #b02a37;
+}
+
+.main-content {
+    position: absolute;
+    top: 50%; /* Центр экрана */
+    transform: translateY(-50%); /* Смещаем вверх на половину высоты от хедера */
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 32px;
+}
+
+.author-list {
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+    max-width: 600px;
+    text-align: left;
+}
+
+.author-list li {
+    padding: 10px;
+    font-size: 18px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+.author-list li:last-child {
+    border-bottom: none;
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.page-button {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.page-button:hover {
+    background-color: #0056b3;
+}
+
+.active-page {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #0056b3;
+    border: none;
+    border-radius: 5px;
+    cursor: default;
+}

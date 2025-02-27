@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { findAllClient } from '../api'; // Используем сохранённый api.js
+import { useNavigate, useParams } from 'react-router-dom';
+import { internshipApi, findClientById } from '../api';// Используем api.js с токенами
 import '../styles/RoomPage.css';
 
 const RoomPage = () => {
     const navigate = useNavigate();
+    const { id } = useParams(); // Извлекаем id из URL
     const [clientData, setClientData] = useState(null);
 
     useEffect(() => {
-        findAllClient()
+        internshipApi
+            .get(`/client/${id}`) // GET-запрос с id пользователя
             .then((response) => {
-                const clients = response.data;
-                const currentClient = clients[0]; // Уточни логику выбора клиента
-                setClientData(currentClient);
+                setClientData(response.data);
             })
             .catch((error) => {
                 console.error('Ошибка загрузки данных клиента:', error);
+                if (error.response?.status === 401) {
+                    navigate('/'); // Перенаправление на логин при истёкшем токене
+                }
             });
-    }, []);
+    }, [id, navigate]);
 
     const handleBack = () => {
         navigate('/home');
@@ -27,7 +30,7 @@ const RoomPage = () => {
         <div className="room-page">
             <header className="header">
                 <div className="left-section">
-                    {/* Оставляем пустым, как в HomePage */}
+                    {/* Пусто */}
                 </div>
                 <div className="right-section">
                     <button onClick={handleBack} className="header-button">
