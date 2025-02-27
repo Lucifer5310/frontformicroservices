@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import RoomPage from "./pages/RoomPage";
 import AdminPage from './pages/AdminPage';
 import AuthorPage from "./pages/AuthorPage";
+import ImagesPage from "./pages/ImagesPage";
 
 function App() {
     return (
@@ -12,7 +13,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<AuthPage />} />
                 <Route path="/home" element={<HomePage />} />
-                <Route path="/client/:id" element={<RoomPage />} />
+                <Route path="/room/:id" element={<RoomPage />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/users" element={<div>Пользователи (в разработке)</div>} />
                 <Route path="/admin/client" element={<div>Клиенты (в разработке)</div>} />
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/admin/shelf" element={<div>Полки (в разработке)</div>} />
                 <Route path="/books" element={<div>Библиотека (в разработке)</div>} />
                 <Route path="/author" element={<AuthorPage />} />
+                <Route path="/images" element={<ImagesPage />} />
             </Routes>
         </Router>
     );

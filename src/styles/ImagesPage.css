@@ -1,0 +1,192 @@
+.images-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Убираем тень под хедером */
+    flex-shrink: 0; /* Хедер не сжимается */
+    position: sticky; /* Фиксируем хедер наверху */
+    top: 0;
+    z-index: 10; /* Хедер выше остального контента */
+    border-bottom: none; /* Убираем границу */
+}
+
+.left-section,
+.right-section {
+    display: flex;
+    gap: 15px;
+}
+
+.header-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.header-button:hover {
+    background-color: #0056b3;
+}
+
+.header-button.logout-button {
+    background-color: #dc3545;
+}
+
+.header-button.logout-button:hover {
+    background-color: #b02a37;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px 20px; /* Убираем верхний padding, сохраняем боковые и нижний */
+    overflow-y: auto; /* Скролл для всего контента */
+    background-color: #f0f2f5; /* Убираем белую полосу, совпадаем с фоном */
+}
+
+h1 {
+    margin-top: 30px;
+    color: #000;
+    font-size: 36px;
+    text-align: center;
+    flex-shrink: 0;
+    font-weight: bold;
+    text-shadow: none;
+}
+
+.image-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 колонок одинаковой ширины */
+    gap: 30px;
+    justify-content: center;
+    width: 100%; /* Полная ширина без ограничения */
+    padding-bottom: 20px; /* Отступ снизу для футера */
+    margin-top: 50%; /* Смещаем карточки вниз на половину высоты экрана */
+}
+
+.image-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Занимает всю ширину колонки */
+    box-sizing: border-box;
+}
+
+.image-preview {
+    width: 100%;
+    max-width: 300px;
+    max-height: 400px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.upload-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.upload-plus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 400px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.upload-plus span {
+    font-size: 60px;
+    color: #007bff;
+}
+
+.image-info {
+    text-align: center;
+    width: 100%;
+}
+
+.image-info p {
+    margin: 8px 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.download-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 12px 25px;
+}
+
+.download-button:hover {
+    background-color: #218838;
+}
+
+.delete-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 12px 0;
+}
+
+.delete-button:hover {
+    background-color: #b02a37;
+}
+
+.upload-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 12px 25px;
+}
+
+.upload-button:hover {
+    background-color: #0056b3;
+}
+
+.upload-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}

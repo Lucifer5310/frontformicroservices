@@ -131,13 +131,14 @@ export const replaceShelf = (id) => internshipApi.put(`/shelf/${id}`);
 export const deleteShelf = (id) => internshipApi.delete(`/shelf/${id}`);
 
 //ImageApi
-export const getAllImagesMetadata = () => imageServiceApi.get('/images');
-export const deleteImage = (id) => imageServiceApi.delete(`/images/${id}`);
-export const getImage = (id) => imageServiceApi.get(`/images/${id}`, { responseType: 'blob' });
+export const getAllImages = () => internshipApi.get('/images/all');
+export const getAllImagesMetadata = () => internshipApi.get('/images/metadata');
+export const getImageByFilename = (filename) => internshipApi.get(`/images/download/${filename}`, { responseType: 'blob' });
 export const uploadImage = (file) => {
     const formData = new FormData();
     formData.append('file', file);
-    return imageServiceApi.post('/images/upload', formData, {
+    return internshipApi.post('/images/upload', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
+export const deleteImageByFilename = (filename) => internshipApi.delete(`/images/delete/${filename}`);

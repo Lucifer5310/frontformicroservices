@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { decodeJWT } from './AuthPage'; // Импортируем функцию декодирования из AuthPage (или переместим её в утилиты)
+import { decodeJWT } from './AuthPage';
 import '../styles/HomePage.css';
 
 const HomePage = () => {
@@ -43,6 +43,10 @@ const HomePage = () => {
         navigate('/author');
     };
 
+    const handleGallery = () => {
+        navigate('/images');
+    };
+
     return (
         <div className="home-page">
             <header className="header">
@@ -70,6 +74,9 @@ const HomePage = () => {
                     </button>
                     <button onClick={handleAuthors} className="action-button">
                         Авторы
+                    </button>
+                    <button onClick={handleGallery} className="action-button">
+                        Галерея обложек
                     </button>
                 </div>
             </main>
