@@ -113,8 +113,8 @@ const ImagesPage = () => {
                     </button>
                 </div>
             </header>
-            <main className="main-content">
-                <h1>Галерея книжных обложек</h1>
+            <main className="main-content1">
+                <h1 className="gallery-title">Галерея книжных обложек</h1>
                 <div className="image-list">
                     {userRole === 'ROLE_ADMIN' && (
                         <div className="image-item upload-card">

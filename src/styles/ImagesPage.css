@@ -47,7 +47,7 @@
     background-color: #b02a37;
 }
 
-.main-content {
+.main-content1 {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -55,16 +55,15 @@
     padding: 0 20px 20px; /* Убираем верхний padding, сохраняем боковые и нижний */
     overflow-y: auto; /* Скролл для всего контента */
     background-color: #f0f2f5; /* Убираем белую полосу, совпадаем с фоном */
+    margin-top: 2%;
 }
 
-h1 {
-    margin-top: 30px;
+.gallery-title {
     color: #000;
     font-size: 36px;
     text-align: center;
-    flex-shrink: 0;
     font-weight: bold;
-    text-shadow: none;
+    margin-bottom: 50px; /* Отступ снизу, чтобы заголовок не прилипал к карточкам */
 }
 
 .image-list {
@@ -74,7 +73,7 @@ h1 {
     justify-content: center;
     width: 100%; /* Полная ширина без ограничения */
     padding-bottom: 20px; /* Отступ снизу для футера */
-    margin-top: 50%; /* Смещаем карточки вниз на половину высоты экрана */
+
 }
 
 .image-item {
