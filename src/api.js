@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Создаём экземпляры axios для разных микросервисов
 export const internshipApi = axios.create({
     baseURL: 'http://localhost:8080',
 });
@@ -9,7 +10,7 @@ const imageServiceApi = axios.create({
 });
 
 // Функция для декодирования JWT (взята из AuthPage, можно вынести в утилиты)
-const decodeJWT = (token) => {
+export const decodeJWT = (token) => {
     try {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -26,64 +27,89 @@ const decodeJWT = (token) => {
     }
 };
 
-// Интерцептор для проверки и обновления токена перед запросом
+// Функция для обновления токена
+const refreshToken = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!refreshToken) {
+        console.error('Refresh токен отсутствует');
+        localStorage.clear();
+        window.location.href = '/';
+        throw new Error('Refresh токен отсутствует');
+    }
+
+    try {
+        const response = await axios.post('http://localhost:8080/auth/refresh', { refreshToken });
+        const newAccessToken = response.data.accessToken;
+        localStorage.setItem('accessToken', newAccessToken);
+        console.log('Токен обновлён:', newAccessToken);
+        return newAccessToken;
+    } catch (refreshError) {
+        console.error('Ошибка обновления токена:', refreshError);
+        if (refreshError.response?.status === 401) {
+            console.error('Refresh токен истёк или недействителен');
+        }
+        localStorage.clear();
+        window.location.href = '/';
+        throw refreshError;
+    }
+};
+
+// Интерцептор для проверки и обновления токена перед каждым запросом (кроме логина/регистрации)
 internshipApi.interceptors.request.use(
     async (config) => {
-        let accessToken = localStorage.getItem('accessToken');
-        if (accessToken) {
-            const decodedToken = decodeJWT(accessToken);
-            const expTime = decodedToken.exp * 1000; // В миллисекундах (JWT exp в секундах)
-            const currentTime = Date.now();
-            const timeLeft = expTime - currentTime;
-            const bufferTime = 5 * 60 * 1000; // 5 минут в миллисекундах
-
-            // Если токен истекает через менее чем 5 минут
-            if (timeLeft < bufferTime) {
-                const refreshToken = localStorage.getItem('refreshToken');
-                try {
-                    const response = await axios.post(
-                        'http://localhost:8080/auth/refresh',
-                        { refreshToken }
-                    ); // Используем axios напрямую, чтобы избежать рекурсии
-                    accessToken = response.data.accessToken;
-                    localStorage.setItem('accessToken', accessToken);
-                    console.log('Токен обновлён проактивно');
-                } catch (refreshError) {
-                    console.error('Ошибка обновления токена:', refreshError);
-                    localStorage.clear();
-                    window.location.href = '/';
-                    return Promise.reject(refreshError);
-                }
-            }
-            config.headers.Authorization = `Bearer ${accessToken}`;
+        // Пропускаем запросы на логин и регистрацию
+        if (config.url === '/auth/sign-in' || config.url === '/auth/sign-up') {
+            return config; // Не проверяем и не добавляем токен
         }
+
+        let accessToken = localStorage.getItem('accessToken');
+        if (!accessToken) {
+            console.error('Access токен отсутствует');
+            localStorage.clear();
+            window.location.href = '/';
+            throw new Error('Access токен отсутствует');
+        }
+
+        const decodedToken = decodeJWT(accessToken);
+        console.log('Декодированный токен:', decodedToken); // Отладка
+        const expTime = decodedToken.exp * 1000; // В миллисекундах (JWT exp в секундах)
+        const currentTime = Date.now();
+        const timeLeft = expTime - currentTime;
+        const bufferTime = 5 * 60 * 1000; // 5 минут в миллисекундах
+
+        if (timeLeft < bufferTime) {
+            try {
+                accessToken = await refreshToken(); // Обновляем токен проактивно
+            } catch (error) {
+                throw error; // Перебрасываем ошибку для обработки в response interceptor
+            }
+        }
+
+        config.headers.Authorization = `Bearer ${accessToken}`;
         return config;
     },
     (error) => Promise.reject(error)
 );
 
-// Интерцептор для обработки 401 (на случай, если токен всё же истёк)
+// Интерцептор для обработки 401 (на случай, если токен всё же истёк, кроме логина/регистрации)
 internshipApi.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
+        // Пропускаем запросы на логин и регистрацию
+        if (originalRequest.url === '/auth/sign-in' || originalRequest.url === '/auth/sign-up') {
+            return Promise.reject(error); // Обрабатываем ошибки без обновления токена
+        }
+
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
-            const refreshToken = localStorage.getItem('refreshToken');
             try {
-                const response = await axios.post(
-                    'http://localhost:8080/auth/refresh',
-                    { refreshToken }
-                );
-                const newAccessToken = response.data.accessToken;
-                localStorage.setItem('accessToken', newAccessToken);
+                const newAccessToken = await refreshToken(); // Обновляем токен при 401
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                return internshipApi(originalRequest);
+                return internshipApi(originalRequest); // Повторяем запрос с новым токеном
             } catch (refreshError) {
-                console.error('Ошибка обновления токена:', refreshError);
-                localStorage.clear();
-                window.location.href = '/';
-                return Promise.reject(refreshError);
+                console.error('Не удалось обновить токен:', refreshError);
+                throw refreshError; // Перебрасываем ошибку для обработки в компоненте (если нужно)
             }
         }
         return Promise.reject(error);
@@ -108,7 +134,7 @@ export const replaceBookcase = (id) => internshipApi.put(`/bookcase/${id}`);
 export const deleteBookcase = (id) => internshipApi.delete(`/bookcase/${id}`);
 
 //BookApi
-export const findAllBook = () => internshipApi.get('/book');
+export const findAllBooks = () => internshipApi.get('/book');
 export const addOneBook = () => internshipApi.post('/book');
 export const replaceBook = (id) => internshipApi.put(`/book/${id}`);
 export const deleteBook = (id) => internshipApi.delete(`/book/${id}`);
@@ -135,6 +161,7 @@ export const deleteShelf = (id) => internshipApi.delete(`/shelf/${id}`);
 export const getAllImages = () => internshipApi.get('/images/all');
 export const getAllImagesMetadata = () => internshipApi.get('/images/metadata');
 export const getImageByFilename = (filename) => internshipApi.get(`/images/download/${filename}`, { responseType: 'blob' });
+export const getImageContentByFilename = (filename) => internshipApi.get(`/images/${filename}`, { responseType: 'blob' });
 export const uploadImage = (file) => {
     const formData = new FormData();
     formData.append('file', file);
