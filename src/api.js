@@ -96,9 +96,10 @@ export const signIn = () => internshipApi.post('/auth/sign-in');
 
 //Author API
 export const findAllAuthor = () => internshipApi.get('/author');
-export const addOneAuthor = () => internshipApi.post('/author');
-export const replaceAuthor = (id) => internshipApi.put(`/author/${id}`);
-export const deleteAuthor = (id) => internshipApi.delete(`/author/${id}`);
+export const getAuthorById = (id) => internshipApi.get(`/author/${id}`);
+export const addOneAuthor = (authorData) => internshipApi.post('/author', authorData);
+export const updateAuthor = (id, authorData) => internshipApi.put(`/author/${id}`, authorData);
+export const deleteAuthorById = (id) => internshipApi.delete(`/author/${id}`);
 
 //BookcaseApi
 export const findAllBookcase = () => internshipApi.get('/bookcase');

@@ -22,7 +22,7 @@ const HomePage = () => {
         const accessToken = localStorage.getItem('accessToken');
         if (accessToken) {
             const decodedToken = decodeJWT(accessToken);
-            const userId = decodedToken.id; // Предполагаем, что id в поле "sub" или "id"
+            const userId = decodedToken.id;
             if (userId) {
                 navigate(`/client/${userId}`);
             } else {
@@ -31,7 +31,7 @@ const HomePage = () => {
             }
         } else {
             console.error('Токен отсутствует');
-            navigate('/'); // Возвращаем на логин, если токена нет
+            navigate('/'); // Не нужно очищать localStorage здесь, интерцептор сделает это
         }
     };
 

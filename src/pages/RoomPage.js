@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { internshipApi, findClientById } from '../api';// Используем api.js с токенами
+import { findClientById } from '../api'; // Используем только findClientById из api.js
 import '../styles/RoomPage.css';
 
 const RoomPage = () => {
@@ -9,8 +9,7 @@ const RoomPage = () => {
     const [clientData, setClientData] = useState(null);
 
     useEffect(() => {
-        internshipApi
-            .get(`/client/${id}`) // GET-запрос с id пользователя
+        findClientById(id) // Используем импортированный метод
             .then((response) => {
                 setClientData(response.data);
             })

@@ -13,7 +13,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<AuthPage />} />
                 <Route path="/home" element={<HomePage />} />
-                <Route path="/room/:id" element={<RoomPage />} />
+                <Route path="/client/:id" element={<RoomPage />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/admin/users" element={<div>Пользователи (в разработке)</div>} />
                 <Route path="/admin/client" element={<div>Клиенты (в разработке)</div>} />

@@ -43,11 +43,7 @@
 }
 
 .main-content {
-    position: absolute;
-    top: 50%; /* Центр экрана */
-    transform: translateY(-50%); /* Смещаем вверх на половину высоты от хедера */
-    left: 0;
-    right: 0;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,6 +56,42 @@ h1 {
     font-size: 32px;
 }
 
+.add-author {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.add-author input {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.add-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.add-button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
 .author-list {
     list-style-type: none;
     padding: 0;
@@ -68,15 +100,64 @@ h1 {
     text-align: left;
 }
 
-.author-list li {
+.author-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 10px;
     font-size: 18px;
     color: #333;
     border-bottom: 1px solid #ddd;
 }
 
-.author-list li:last-child {
+.author-item:last-child {
     border-bottom: none;
+}
+
+.author-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center; /* Выравниваем кнопки по вертикали */
+}
+
+.edit-button {
+    padding: 8px 16px; /* Увеличиваем размер для симметрии */
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 110px; /* Фиксированная ширина для симметрии */
+    height: 34px; /* Фиксированная высота для симметрии */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Центрируем текст внутри кнопки */
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button {
+    padding: 8px 16px; /* Увеличиваем размер для симметрии */
+    font-size: 14px;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 90px; /* Фиксированная ширина для симметрии */
+    height: 34px; /* Фиксированная высота для симметрии */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Центрируем текст внутри кнопки */
+}
+
+.delete-button:hover {
+    background-color: #b02a37;
 }
 
 .pagination {
@@ -108,4 +189,82 @@ h1 {
     border: none;
     border-radius: 5px;
     cursor: default;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Центрируем содержимое */
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+}
+
+.modal-content input {
+    width: 80%; /* Уменьшаем ширину для симметрии */
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center; /* Центрируем текст */
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center; /* Центрируем кнопки */
+    gap: 20px; /* Увеличиваем расстояние между кнопками */
+    margin-top: 20px;
+}
+
+.save-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
+
+.cancel-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cancel-button:hover {
+    background-color: #b02a37;
 }

@@ -152,14 +152,16 @@ const ImagesPage = () => {
                                 <p>{image.filename}</p>
                                 <p>Загружено: {new Date(image.uploadDate).toLocaleDateString()}</p>
                                 <p>Размер: {Math.round(image.length / 1024)} КБ</p>
-                                <button onClick={() => handleDownload(image.filename)} className="download-button">
-                                    Скачать
-                                </button>
-                                {userRole === 'ROLE_ADMIN' && (
-                                    <button onClick={() => handleDelete(image.filename)} className="delete-button">
-                                        Удалить
+                                <div className="button-container">
+                                    <button onClick={() => handleDownload(image.filename)} className="download-button">
+                                        Скачать
                                     </button>
-                                )}
+                                    {userRole === 'ROLE_ADMIN' && (
+                                        <button onClick={() => handleDelete(image.filename)} className="delete-button">
+                                            Удалить
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     ))}

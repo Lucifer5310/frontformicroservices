@@ -73,7 +73,6 @@
     justify-content: center;
     width: 100%; /* Полная ширина без ограничения */
     padding-bottom: 20px; /* Отступ снизу для футера */
-
 }
 
 .image-item {
@@ -129,12 +128,25 @@
 .image-info {
     text-align: center;
     width: 100%;
+    display: flex; /* Используем flex для выравнивания элементов */
+    flex-direction: column; /* Метаданные в столбик */
+    align-items: center; /* Центрируем метаданные и кнопки */
+    gap: 5px; /* Уменьшенное расстояние между метаданными и кнопками */
 }
 
 .image-info p {
-    margin: 8px 0;
+    margin: 5px 0; /* Уменьшаем отступы между метаданными */
     color: #333;
     font-size: 16px;
+}
+
+.image-info .button-container { /* Новый класс для кнопок */
+    display: flex;
+    flex-direction: row; /* Кнопки в строчку */
+    justify-content: center; /* Центрируем кнопки по горизонтали */
+    align-items: center; /* Выравниваем по вертикали */
+    gap: 10px; /* Расстояние между кнопками */
+    width: 100%; /* Занимаем всю ширину */
 }
 
 .download-button {
@@ -146,7 +158,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 12px 25px;
+    margin: 0; /* Убираем отступы, чтобы кнопки выравнивались */
 }
 
 .download-button:hover {
@@ -162,7 +174,7 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 12px 0;
+    margin: 0; /* Убираем отступы, чтобы кнопки выравнивались */
 }
 
 .delete-button:hover {
