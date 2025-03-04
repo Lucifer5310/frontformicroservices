@@ -61,6 +61,26 @@
     font-size: 32px;
 }
 
+.add-book-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1200px; /* Такая же ширина, как book-grid */
+    height: 40px; /* В 2 раза выше, чем обычная карточка (200px * 2) */
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.add-plus {
+    font-size: 40px;
+    color: #007bff;
+}
+
 .book-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 колонки для 3 книг в ряд */
@@ -79,6 +99,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     box-sizing: border-box;
+    height: 240px; /* Убедимся, что обычные карточки имеют фиксированную высоту */
 }
 
 .book-image {
@@ -113,7 +134,7 @@
     font-size: 14px;
     padding: 5px 10px;
     border-radius: 3px;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .book-status.occupied {
@@ -155,4 +176,87 @@
     border: none;
     border-radius: 5px;
     cursor: default;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-content .read-checkbox {
+    margin-bottom: 15px;
+}
+
+.modal-content .read-checkbox input {
+    margin-right: 5px;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.modal-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-button.cancel {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.modal-button.cancel:hover {
+    background-color: #b02a37;
+}
+
+.modal-button.add {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.modal-button.add:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.modal-button.add:hover:not(:disabled) {
+    background-color: #0056b3;
 }
