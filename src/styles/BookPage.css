@@ -90,23 +90,33 @@
     padding-bottom: 20px;
 }
 
+.book-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
 .book-card {
     display: flex;
-    align-items: center;
+    flex-direction: row; /* Размещаем элементы в ряд */
+    align-items: flex-start;
+    justify-content: space-between; /* Равномерное распределение элементов */
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
     box-sizing: border-box;
-    height: 240px; /* Убедимся, что обычные карточки имеют фиксированную высоту */
+    min-height: 280px;
+    gap: 20px;
+    position: relative; /* Для абсолютного позиционирования кнопок */
 }
 
 .book-image {
     width: 150px;
     height: 200px;
     object-fit: cover;
-    margin-right: 20px;
     border-radius: 5px;
 }
 
@@ -117,11 +127,11 @@
     gap: 10px;
 }
 
-.book-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #333;
-    margin: 0;
+.book-actions {
+    position: absolute;
+    bottom: 10px; /* Прижимаем кнопки к низу карточки */
+    display: flex;
+    gap: 10px; /* Отступ между кнопками */
 }
 
 .book-genre, .book-author, .book-location {
@@ -135,6 +145,7 @@
     padding: 5px 10px;
     border-radius: 3px;
     margin-top: 5px;
+    width: fit-content; /* Автоматическая ширина для статуса */
 }
 
 .book-status.occupied {
@@ -145,6 +156,45 @@
 .book-status.available {
     background-color: #00C851;
     color: #fff;
+}
+
+.book-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px; /* Расстояние между статусом и кнопками */
+    width: 90%; /* Кнопки занимают всю ширину карточки */
+}
+
+.book-actions.full-width {
+    justify-content: space-between; /* Распределяем кнопки по краям */
+}
+
+.edit-button, .delete-button1 {
+    padding: 5px 15px; /* Увеличил padding для большей ширины */
+    font-size: 13px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex: 1; /* Кнопки растягиваются на всю доступную ширину */
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button1 {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.delete-button:hover {
+    background-color: #b02a37;
 }
 
 .pagination {
@@ -247,16 +297,16 @@
     background-color: #b02a37;
 }
 
-.modal-button.add {
+.modal-button.add, .modal-button.save {
     background-color: #007bff;
     color: #fff;
 }
 
-.modal-button.add:disabled {
+.modal-button.add:disabled, .modal-button.save:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
 }
 
-.modal-button.add:hover:not(:disabled) {
+.modal-button.add:hover:not(:disabled), .modal-button.save:hover:not(:disabled) {
     background-color: #0056b3;
 }

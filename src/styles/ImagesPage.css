@@ -158,7 +158,8 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 0; /* Убираем отступы, чтобы кнопки выравнивались */
+    margin: 0;
+    max-width: 100px;/* Убираем отступы, чтобы кнопки выравнивались */
 }
 
 .download-button:hover {
@@ -174,7 +175,8 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin: 0; /* Убираем отступы, чтобы кнопки выравнивались */
+    margin: 0;
+    max-width: 100px;/* Убираем отступы, чтобы кнопки выравнивались */
 }
 
 .delete-button:hover {
