@@ -153,7 +153,7 @@ export const deleteBookcase = (id) => internshipApi.delete(`/bookcase/${id}`);
 //BookApi
 export const findAllBooks = () => internshipApi.get('/book');
 export const getBookById = (id) => internshipApi.get(`/book/${id}`);
-export const addOneBook = (bookdata) => internshipApi.post('/book', bookdata);
+export const addOneBook = (bookData) => internshipApi.post('/book', bookData);
 export const updateBook = (id, bookData) => internshipApi.put(`/book/${id}`, bookData);
 export const deleteBookById = (id) => internshipApi.delete(`/book/${id}`);
 

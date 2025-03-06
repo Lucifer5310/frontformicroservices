@@ -25,9 +25,10 @@ const BookPage = () => {
         name: '',
         genre: '',
         imageName: '',
-        isRead: false,
+        isRead: false, // Всегда false для добавления
         authorName: '',
         shelfName: '',
+        // Убрали clientId для добавления
     });
     const [editBook, setEditBook] = useState({
         id: null,
@@ -37,10 +38,13 @@ const BookPage = () => {
         isRead: false,
         authorName: '',
         shelfName: '',
+        clientId: null, // Сохраняем clientId для редактирования как число или null
     });
     const [imageFilenames, setImageFilenames] = useState([]);
     const [authors, setAuthors] = useState([]);
     const [shelves, setShelves] = useState([]);
+    const [isLoading, setIsLoading] = useState(false); // Состояние для отслеживания загрузки данных
+    const [error, setError] = useState(null); // Состояние для ошибок
     const userRole = localStorage.getItem('userRole');
     const booksPerPage = 9; // 3 ряда по 3 книги
 
@@ -54,7 +58,7 @@ const BookPage = () => {
     const fetchBooks = async () => {
         try {
             const response = await findAllBooks();
-            console.log('Список книг с оригинальными данными:', response.data);
+            console.log('Список книг с оригинальными данными (после обновления, с clientId):', response.data);
             setBooks(response.data);
             // Загружаем изображения только для новых книг
             loadImagesForBooks(response.data.filter(book => book.imageName && !bookImages[book.imageName]));
@@ -186,6 +190,13 @@ const BookPage = () => {
             ...prev,
             [name]: value,
         }));
+        // Автоматически обновляем isRead на основе clientId для editBook
+        if (name === 'clientId') {
+            setEditBook(prev => ({
+                ...prev,
+                isRead: value !== 'null' && value !== '' // Если clientId не "null" и не пустое, то isRead = true
+            }));
+        }
     };
 
     const handleSelectChange = (e) => {
@@ -211,9 +222,10 @@ const BookPage = () => {
                 name: newBook.name,
                 genre: newBook.genre,
                 imageName: newBook.imageName,
-                isRead: newBook.isRead,
+                isRead: false, // Всегда false для добавления
                 authorName: newBook.authorName,
                 shelfName: newBook.shelfName,
+                // Убрали clientId для добавления
             };
             console.log('Отправляемые данные для новой книги:', bookData);
 
@@ -235,6 +247,7 @@ const BookPage = () => {
             const response = await addOneBook(bookData, {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`, // Убедимся, что токен передаётся
                 },
             });
             console.log('Ответ сервера при добавлении книги:', response);
@@ -244,19 +257,18 @@ const BookPage = () => {
                 name: '',
                 genre: '',
                 imageName: '',
-                isRead: false,
+                isRead: false, // Сбрасываем в false
                 authorName: '',
                 shelfName: '',
+                // Убрали clientId
             });
-            fetchBooks();
+            await fetchBooks(); // Ждём завершения обновления списка книг
         } catch (error) {
             console.error('Ошибка добавления книги:', error);
             if (error.response?.status === 403) {
-                console.error('Доступ запрещён (403): Проверь роль и токен');
-                console.error('Тело ответа сервера:', error.response.data || 'Нет данных');
-                console.error('Заголовки ответа:', error.response.headers);
-                console.error('Полный запрос:', error.config);
-                alert('Доступ запрещён: У вас нет прав для добавления книги. Убедитесь, что вы вошли как администратор.');
+                const errorMessage = error.response?.data?.message || 'Доступ запрещён: У вас нет прав для добавления книги. Проверьте роль или токен.';
+                console.error('Ошибка 403:', error.response.data);
+                alert(errorMessage);
             } else if (error.response?.status === 401) {
                 console.error('Токен истёк (401)');
                 alert('Сессия истекла. Пожалуйста, войдите заново.');
@@ -273,51 +285,72 @@ const BookPage = () => {
             name: '',
             genre: '',
             imageName: '',
-            isRead: false,
+            isRead: false, // Сбрасываем в false
             authorName: '',
             shelfName: '',
+            // Убрали clientId
         });
     };
 
     // Функции для редактирования и удаления
-    const handleEditBook = async (bookId) => {
+    const handleEditBook = (bookId) => {
         if (userRole !== 'ROLE_ADMIN') return;
 
+        // Открываем модальное окно сразу, устанавливая только id
+        setEditBook({ id: bookId, name: '', genre: '', imageName: '', isRead: false, authorName: '', shelfName: '', clientId: null });
+        setIsEditModalOpen(true);
+        // Выполняем запрос на получение данных после открытия модального окна
+        fetchBookData(bookId);
+    };
+
+    const fetchBookData = async (bookId) => {
+        setIsLoading(true); // Начинаем загрузку
+        setError(null); // Сбрасываем предыдущие ошибки
         try {
             const response = await getBookById(bookId);
-            console.log('Данные книги для редактирования:', response.data);
+            console.log('Данные книги для редактирования (с ID и clientId):', response.data);
             const book = response.data;
+            // Убедимся, что все поля определены, устанавливаем значения по умолчанию
             setEditBook({
-                id: book.id,
-                name: book.name,
-                genre: book.genre,
-                imageName: book.imageName,
-                isRead: book.isRead,
-                authorName: book.authorName,
-                shelfName: book.shelfName,
+                id: book.id || bookId, // Гарантируем, что id всегда есть, даже если сервер не вернул его
+                name: book.name || '',
+                genre: book.genre || '',
+                imageName: book.imageName || '',
+                isRead: book.isRead || false, // Устанавливаем false, если isRead undefined
+                authorName: book.authorName || '',
+                shelfName: book.shelfName || '',
+                clientId: book.clientId !== undefined && book.clientId !== null ? book.clientId.toString() : 'null', // Отображаем как "null", если clientId === null
             });
-            setIsEditModalOpen(true);
         } catch (error) {
             console.error('Ошибка загрузки данных книги:', error);
+            setError('Не удалось загрузить данные книги. Проверьте подключение или права доступа.');
             if (error.response?.status === 401) {
                 navigate('/');
             }
+        } finally {
+            setIsLoading(false); // Завершаем загрузку
         }
     };
 
     const handleSaveEdit = async () => {
-        if (userRole !== 'ROLE_ADMIN') return;
+        console.log('Попытка сохранить книгу. Текущие данные:', editBook); // Отладка
+        if (userRole !== 'ROLE_ADMIN' || !editBook.id) {
+            console.error('Не удалось сохранить: userRole или editBook.id отсутствует', { userRole, editBookId: editBook.id });
+            alert('Не удалось сохранить книгу: ID книги отсутствует или пользователь не администратор.');
+            return;
+        }
 
         try {
             const bookData = {
                 name: editBook.name,
                 genre: editBook.genre,
                 imageName: editBook.imageName,
-                isRead: editBook.isRead,
+                read: editBook.clientId !== 'null' && editBook.clientId !== '' && editBook.clientId !== null, // Используем read вместо isRead
                 authorName: editBook.authorName,
                 shelfName: editBook.shelfName,
+                clientId: editBook.clientId === 'null' || editBook.clientId === '' ? null : Number(editBook.clientId), // Преобразуем в Long или null
             };
-            console.log('Данные для обновления книги:', bookData);
+            console.log('Данные для обновления книги (с преобразованным clientId и read):', bookData);
 
             const accessToken = localStorage.getItem('accessToken');
             if (!accessToken) {
@@ -328,15 +361,20 @@ const BookPage = () => {
             }
 
             const decodedToken = decodeJWT(accessToken);
+            console.log('Текущий токен и роль:', { accessToken, role: decodedToken.role || 'Не определена' });
+
             if (!decodedToken.role || !decodedToken.role.includes('ROLE_ADMIN')) {
                 throw new Error('Роль не соответствует ROLE_ADMIN');
             }
 
+            // Явно используем editBook.id для PUT-запроса на /book/{id}
             await updateBook(editBook.id, bookData, {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`, // Убедимся, что токен передаётся
                 },
             });
+            console.log(`PUT-запрос отправлен на /book/${editBook.id}`);
             console.log('Книга обновлена');
             setIsEditModalOpen(false);
             setEditBook({
@@ -347,16 +385,20 @@ const BookPage = () => {
                 isRead: false,
                 authorName: '',
                 shelfName: '',
+                clientId: null, // Сбрасываем clientId
             });
-            fetchBooks(); // Обновляем список книг
+            await fetchBooks(); // Ждём завершения обновления списка книг
         } catch (error) {
             console.error('Ошибка обновления книги:', error);
             if (error.response?.status === 403) {
-                alert('У вас нет прав для обновления книги. Проверьте роль или токен.');
+                const errorMessage = error.response?.data?.message || 'Доступ запрещён: У вас нет прав для обновления книги. Проверьте роль или токен.';
+                console.error('Ошибка 403:', error.response.data);
+                alert(errorMessage);
             } else if (error.response?.status === 401) {
                 navigate('/');
+                alert('Сессия истекла. Пожалуйста, войдите заново.');
             } else {
-                alert('Ошибка при обновлении книги: ' + (error.response?.data?.message || 'Попробуйте снова'));
+                alert('Ошибка при обновления книги: ' + (error.response?.data?.message || 'Попробуйте снова'));
             }
         }
     };
@@ -371,7 +413,9 @@ const BookPage = () => {
             isRead: false,
             authorName: '',
             shelfName: '',
+            clientId: null, // Сбрасываем clientId
         });
+        setError(null); // Сбрасываем ошибки при закрытии
     };
 
     const handleDeleteBook = async (bookId) => {
@@ -394,16 +438,20 @@ const BookPage = () => {
             await deleteBookById(bookId, {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`, // Убедимся, что токен передаётся
                 },
             });
             console.log('Книга удалена:', bookId);
-            fetchBooks(); // Обновляем список книг
+            await fetchBooks(); // Ждём завершения обновления списка книг
         } catch (error) {
             console.error('Ошибка удаления книги:', error);
             if (error.response?.status === 403) {
-                alert('У вас нет прав для удаления книги. Проверьте роль или токен.');
+                const errorMessage = error.response?.data?.message || 'Доступ запрещён: У вас нет прав для удаления книги. Проверьте роль или токен.';
+                console.error('Ошибка 403:', error.response.data);
+                alert(errorMessage);
             } else if (error.response?.status === 401) {
                 navigate('/');
+                alert('Сессия истекла. Пожалуйста, войдите заново.');
             } else {
                 alert('Ошибка при удалении книги: ' + (error.response?.data?.message || 'Попробуйте снова'));
             }
@@ -450,8 +498,8 @@ const BookPage = () => {
                                 <p className="book-location">
                                     Шкаф: {book.bookcaseNumber}, Полка: {book.shelfName}
                                 </p>
-                                <div className={`book-status ${book.read ? 'occupied' : 'available'}`}>
-                                    {book.read ? 'Книга занята' : 'Книга свободна'}
+                                <div className={`book-status ${book.read !== false ? 'occupied' : 'available'}`}>
+                                    {book.read !== false ? 'Книга занята' : 'Книга свободна'}
                                 </div>
                             </div>
                             {userRole === 'ROLE_ADMIN' && (
@@ -542,18 +590,17 @@ const BookPage = () => {
                                     </option>
                                 ))}
                             </select>
-                            <div className="read-checkbox">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        name="isRead"
-                                        checked={newBook.isRead}
-                                        onChange={() => setNewBook(prev => ({ ...prev, isRead: !prev.isRead }))}
-                                        disabled // Бокс неизменяемый, всегда false
-                                    />
-                                    Книга свободна (неизменяемо)
-                                </label>
-                            </div>
+                            {/* Убрали clientId */}
+                            {/* isRead всегда false и заблокировано */}
+                            <select
+                                name="isRead"
+                                value="false" // Всегда false для добавления
+                                onChange={handleSelectChange}
+                                required
+                                disabled // Блокируем возможность изменения
+                            >
+                                <option value="false">Нет (свободна)</option>
+                            </select>
                             <div className="modal-buttons">
                                 <button type="button" onClick={handleCancel} className="modal-button cancel">
                                     Отмена
@@ -574,28 +621,33 @@ const BookPage = () => {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <h2>Редактировать книгу</h2>
+                        {isLoading && <p>Загрузка данных книги...</p>}
+                        {error && <p className="error-message">{error}</p>}
                         <form onSubmit={(e) => { e.preventDefault(); handleSaveEdit(); }}>
                             <input
                                 type="text"
                                 name="name"
                                 placeholder="Название книги"
-                                value={editBook.name}
+                                value={editBook.name || ''} // Устанавливаем пустую строку, если undefined
                                 onChange={handleEditInputChange}
                                 required
+                                disabled={isLoading}
                             />
                             <input
                                 type="text"
                                 name="genre"
                                 placeholder="Жанр"
-                                value={editBook.genre}
+                                value={editBook.genre || ''} // Устанавливаем пустую строку, если undefined
                                 onChange={handleEditInputChange}
                                 required
+                                disabled={isLoading}
                             />
                             <select
                                 name="imageName"
-                                value={editBook.imageName}
+                                value={editBook.imageName || ''} // Устанавливаем пустую строку, если undefined
                                 onChange={handleEditInputChange}
                                 required
+                                disabled={isLoading}
                             >
                                 <option value="">Выберите изображение</option>
                                 {imageFilenames.map((filename) => (
@@ -605,20 +657,11 @@ const BookPage = () => {
                                 ))}
                             </select>
                             <select
-                                name="isRead"
-                                value={editBook.isRead.toString()} // Преобразуем boolean в строку для select
-                                onChange={handleSelectChange}
-                                required
-                            >
-                                <option value="">Выберите статус</option>
-                                <option value="true">Да (занята)</option>
-                                <option value="false">Нет (свободна)</option>
-                            </select>
-                            <select
                                 name="authorName"
-                                value={editBook.authorName}
+                                value={editBook.authorName || ''} // Устанавливаем пустую строку, если undefined
                                 onChange={handleEditInputChange}
                                 required
+                                disabled={isLoading}
                             >
                                 <option value="">Выберите автора</option>
                                 {authors.map((authorName) => (
@@ -629,9 +672,10 @@ const BookPage = () => {
                             </select>
                             <select
                                 name="shelfName"
-                                value={editBook.shelfName}
+                                value={editBook.shelfName || ''} // Устанавливаем пустую строку, если undefined
                                 onChange={handleEditInputChange}
                                 required
+                                disabled={isLoading}
                             >
                                 <option value="">Выберите полку</option>
                                 {shelves.map((shelfName) => (
@@ -640,14 +684,33 @@ const BookPage = () => {
                                     </option>
                                 ))}
                             </select>
+                            <input
+                                type="text"
+                                name="clientId"
+                                placeholder="ID Клиента"
+                                value={editBook.clientId} // Отображаем "null" или значение clientId
+                                onChange={handleEditInputChange}
+                                //required
+                                disabled={isLoading}
+                            />
+                            <select
+                                name="isRead"
+                                value={editBook.isRead.toString()} // Преобразуем boolean в строку для select
+                                onChange={handleSelectChange}
+                                required
+                                disabled // Блокируем возможность изменения isRead
+                            >
+                                <option value="true">Да (занята)</option>
+                                <option value="false">Нет (свободна)</option>
+                            </select>
                             <div className="modal-buttons">
-                                <button type="button" onClick={handleCancelEdit} className="modal-button cancel">
+                                <button type="button" onClick={handleCancelEdit} className="modal-button cancel" disabled={isLoading}>
                                     Отмена
                                 </button>
                                 <button
                                     type="submit"
                                     className="modal-button save"
-                                    disabled={isEditButtonDisabled}
+                                    disabled={isEditButtonDisabled || isLoading}
                                 >
                                     Сохранить
                                 </button>
