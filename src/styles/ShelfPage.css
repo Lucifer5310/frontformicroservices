@@ -1,0 +1,265 @@
+.shelf-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 колонки */
+    gap: 20px; /* Уменьшаем отступы для компактности */
+    margin-top: 20px;
+}
+
+.shelf-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px; /* Уменьшаем внутренние отступы */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    max-width: 400px; /* Уменьшаем минимальную высоту */
+    min-width: 250px;
+    max-height: 250px; /* Уменьшаем минимальную ширину */
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.shelf-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.shelf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+}
+
+.shelf-title-container, .shelf-bookcase-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.shelf-label {
+    font-size: 0.85em;
+    color: #666;
+    font-weight: 500;
+}
+
+.shelf-title {
+    font-size: 1.2em;
+    margin: 0;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.shelf-bookcase {
+    font-size: 1em;
+    margin: 0;
+    color: #34495e;
+    font-weight: 500;
+}
+
+.shelf-books {
+    margin-top: 8px;
+    flex-grow: 1;
+}
+
+.shelf-books h4 {
+    font-size: 1em;
+    color: #333;
+    margin: 0 0 6px 0;
+    font-weight: 500;
+}
+
+.book-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-height: 120px; /* Уменьшаем максимальную высоту списка книг */
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.book-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.book-list::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.book-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.book-list::-webkit-scrollbar-thumb:hover {
+    background: #666;
+}
+
+.book-item {
+    background: #f5f5f5;
+    padding: 4px 8px; /* Уменьшаем внутренние отступы в "таблетках" */
+    border-radius: 12px;
+    font-size: 0.9em;
+    color: #444;
+    border: 1px solid #ddd;
+    flex-basis: fit-content; /* Ограничиваем ширину "таблеток" до ~23%, чтобы в строке было не больше 4 */
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+}
+
+.book-item:hover {
+    background: #e8e8e8;
+}
+
+.book-item.empty {
+    background: #ffebee;
+    color: #c0392b;
+    border: 1px solid #ef5350;
+}
+
+.shelf-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.edit-button,
+.delete-button1 {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background 0.2s ease;
+}
+
+.edit-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+.delete-button1 {
+    background-color: #f44336;
+    color: white;
+}
+
+.delete-button1:hover {
+    background-color: #e53935;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.modal-content h2 {
+    margin: 0 0 20px;
+    font-size: 1.5em;
+    color: #333;
+    text-align: center;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-content input,
+.modal-content select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.modal-content select {
+    appearance: none;
+    background: url('data:image/svg+xml;utf8,<svg fill="gray" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')
+    no-repeat right 10px center;
+    background-size: 20px;
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.modal-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.2s ease;
+}
+
+.modal-button.cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+.modal-button.cancel:hover {
+    background-color: #e53935;
+}
+
+.modal-button.add {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.modal-button.add:hover {
+    background-color: #45a049;
+}
+
+.modal-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.error-message {
+    color: #c0392b;
+    font-size: 0.9em;
+    margin: 0 0 10px;
+    text-align: center;
+}

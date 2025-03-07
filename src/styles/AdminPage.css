@@ -78,6 +78,17 @@ h1 {
     transition: background-color 0.3s;
     min-width: 150px; /* Фиксированная ширина для равномерности */
 }
+.admin-button1 {
+    padding: 12px 24px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    min-width: 320px; /* Фиксированная ширина для равномерности */
+}
 
 .admin-button:hover {
     background-color: #0056b3;

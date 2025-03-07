@@ -7,6 +7,7 @@ const RoomPage = () => {
     const navigate = useNavigate();
     const { id } = useParams(); // Извлекаем id из URL
     const [clientData, setClientData] = useState(null);
+    const userRole = localStorage.getItem('userRole');
 
     useEffect(() => {
         findClientById(id) // Используем импортированный метод
@@ -25,11 +26,19 @@ const RoomPage = () => {
         navigate('/home');
     };
 
+    const handleAdminPanel = () => {
+        navigate('/admin');
+    };
+
     return (
         <div className="room-page">
             <header className="header">
                 <div className="left-section">
-                    {/* Пусто */}
+                    {userRole === 'ROLE_ADMIN' && (
+                        <button onClick={handleAdminPanel} className="header-button">
+                            Панель администратора
+                        </button>
+                    )}
                 </div>
                 <div className="right-section">
                     <button onClick={handleBack} className="header-button">

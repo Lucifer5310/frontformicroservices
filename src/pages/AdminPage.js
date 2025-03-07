@@ -19,7 +19,7 @@ const AdminPage = () => {
         <div className="admin-page">
             <header className="header">
                 <div className="left-section">
-                    {/* Оставляем пустым, как в RoomPage */}
+
                 </div>
                 <div className="right-section">
                     <button onClick={handleBack} className="header-button">
@@ -41,7 +41,7 @@ const AdminPage = () => {
                             Пользователи
                         </button>
                         <button
-                            onClick={() => navigate('/admin/client')}
+                            onClick={() => navigate('/client')}
                             className="admin-button"
                         >
                             Клиенты
@@ -49,13 +49,13 @@ const AdminPage = () => {
                     </div>
                     <div className="button-row">
                         <button
-                            onClick={() => navigate('/admin/book')}
+                            onClick={() => navigate('/book')}
                             className="admin-button"
                         >
                             Книги
                         </button>
                         <button
-                            onClick={() => navigate('/admin/author')}
+                            onClick={() => navigate('/author')}
                             className="admin-button"
                         >
                             Авторы
@@ -63,16 +63,24 @@ const AdminPage = () => {
                     </div>
                     <div className="button-row">
                         <button
-                            onClick={() => navigate('/admin/bookcase')}
+                            onClick={() => navigate('/bookcase')}
                             className="admin-button"
                         >
                             Шкафы
                         </button>
                         <button
-                            onClick={() => navigate('/admin/shelf')}
+                            onClick={() => navigate('/shelf')}
                             className="admin-button"
                         >
                             Полки
+                        </button>
+                    </div>
+                    <div className="button-row">
+                        <button
+                            onClick={() => navigate('/images')}
+                            className="admin-button1"
+                        >
+                            Галерея обложек
                         </button>
                     </div>
                 </div>

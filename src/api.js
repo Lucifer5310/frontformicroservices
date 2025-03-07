@@ -145,9 +145,11 @@ export const updateAuthor = (id, authorData) => internshipApi.put(`/author/${id}
 export const deleteAuthorById = (id) => internshipApi.delete(`/author/${id}`);
 
 //BookcaseApi
-export const findAllBookcase = () => internshipApi.get('/bookcase');
-export const addOneBookcase = () => internshipApi.post('/bookcase');
-export const replaceBookcase = (id) => internshipApi.put(`/bookcase/${id}`);
+export const findAllBookcases = () => internshipApi.get('/bookcase');
+export const getBookcaseById = (id) => internshipApi.get(`/bookcase/${id}`);
+export const getAllBookcaseNumbers = () => internshipApi.get('/bookcase/list');
+export const addOneBookcase = (bookcaseData) => internshipApi.post('/bookcase', bookcaseData);
+export const updateBookcase = (id, bookcaseData) => internshipApi.put(`/bookcase/${id}`, bookcaseData);
 export const deleteBookcase = (id) => internshipApi.delete(`/bookcase/${id}`);
 
 //BookApi
@@ -171,9 +173,10 @@ export const deleteUser = (id) => internshipApi.delete(`/users/${id}`);
 
 //ShelfApi
 export const findAllShelf = () => internshipApi.get('/shelf');
+export const getShelfById = (id) => internshipApi.get(`/shelf/${id}`);
 export const findAllShelfName = () => internshipApi.get('/shelf/list');
-export const addOneShelf = () => internshipApi.post('/shelf');
-export const replaceShelf = (id) => internshipApi.put(`/shelf/${id}`);
+export const addOneShelf = (shelfData) => internshipApi.post('/shelf', shelfData);
+export const updateShelf = (id, shelfData) => internshipApi.put(`/shelf/${id}`, shelfData);
 export const deleteShelf = (id) => internshipApi.delete(`/shelf/${id}`);
 
 //ImageApi

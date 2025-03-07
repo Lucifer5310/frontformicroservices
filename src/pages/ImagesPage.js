@@ -98,11 +98,19 @@ const ImagesPage = () => {
         navigate('/home');
     };
 
+    const handleAdminPanel = () => {
+        navigate('/admin');
+    };
+
     return (
         <div className="images-page">
             <header className="header">
                 <div className="left-section">
-                    {/* Пусто */}
+                    {userRole === 'ROLE_ADMIN' && (
+                        <button onClick={handleAdminPanel} className="header-button">
+                            Панель администратора
+                        </button>
+                    )}
                 </div>
                 <div className="right-section">
                     <button onClick={handleBack} className="header-button">
