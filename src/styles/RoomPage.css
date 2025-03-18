@@ -58,15 +58,8 @@
     padding: 20px;
     width: 100%;
     max-width: 500px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align: center;
-}
-
-.client-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
 }
 
 .client-name {
@@ -74,24 +67,6 @@
     color: #333;
     font-size: 32px;
     font-weight: bold;
-}
-
-.edit-button {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 6px 12px;
-    font-size: 14px;
-    color: #fff;
-    background-color: #17a2b8;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.edit-button:hover {
-    background-color: #138496;
 }
 
 .client-info {
@@ -111,6 +86,30 @@
 
 .info-icon {
     color: #007bff;
+}
+
+/* Секция кнопки "Изменить" */
+.edit-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.edit-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #17a2b8;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover {
+    background-color: #138496;
 }
 
 /* Секция книг в виде сетки */

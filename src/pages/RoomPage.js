@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { findClientById, replaceClient } from '../api'; // Добавляем replaceClient
-import { FaUser, FaEnvelope, FaBook, FaEdit } from 'react-icons/fa'; // Добавляем FaEdit для иконки редактирования
+import { FaUser, FaEnvelope, FaBook, FaEdit } from 'react-icons/fa'; // Иконки
 import '../styles/RoomPage.css';
 
 const RoomPage = () => {
@@ -100,16 +100,11 @@ const RoomPage = () => {
             <main className="main-content">
                 {clientData ? (
                     <>
-                        {/* Карточка клиента с кнопкой "Изменить" */}
+                        {/* Карточка клиента без кнопки "Изменить" */}
                         <div className="client-card">
-                            <div className="client-header">
-                                <h1 className="client-name">
-                                    {clientData.firstName} {clientData.middleName}
-                                </h1>
-                                <button onClick={openModal} className="edit-button">
-                                    <FaEdit /> Изменить
-                                </button>
-                            </div>
+                            <h1 className="client-name">
+                                {clientData.firstName} {clientData.middleName}
+                            </h1>
                             <div className="client-info">
                                 <p>
                                     <FaUser className="info-icon" /> <strong>Username:</strong> {clientData.userName}
@@ -118,6 +113,13 @@ const RoomPage = () => {
                                     <FaEnvelope className="info-icon" /> <strong>Email:</strong> {clientData.userEmail}
                                 </p>
                             </div>
+                        </div>
+
+                        {/* Кнопка "Изменить" вне карточки */}
+                        <div className="edit-section">
+                            <button onClick={openModal} className="edit-button">
+                                <FaEdit /> Изменить
+                            </button>
                         </div>
 
                         {/* Список книг в виде сетки */}
