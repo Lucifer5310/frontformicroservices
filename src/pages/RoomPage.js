@@ -176,16 +176,6 @@ const RoomPage = () => {
                                                 required
                                             />
                                         </div>
-                                        <div className="form-group">
-                                            <label>Юзернейм</label>
-                                            <input
-                                                type="text"
-                                                name="userName"
-                                                value={formData.userName}
-                                                onChange={handleInputChange}
-                                                required
-                                            />
-                                        </div>
                                     </form>
                                     <div className="modal-buttons">
                                         <button onClick={closeModal} className="modal-button cancel-button">
