@@ -35,7 +35,7 @@
 }
 
 .header-button.logout-button {
-    background-color: #dc3545; /* Красный цвет для "Выйти" */
+    background-color: #dc3545;
 }
 
 .header-button.logout-button:hover {
@@ -50,26 +50,203 @@
     padding: 40px;
 }
 
-h1 {
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 32px;
-}
-
-h2 {
-    margin-bottom: 20px;
-    color: #555;
-    font-size: 24px;
-}
-
-.book-list {
-    list-style-type: none;
-    padding: 0;
+/* Карточка клиента */
+.client-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 30px;
     text-align: center;
 }
 
-.book-list li {
-    padding: 10px;
-    font-size: 18px;
+.client-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.client-name {
+    margin: 0;
     color: #333;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.edit-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #17a2b8;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-button:hover {
+    background-color: #138496;
+}
+
+.client-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.client-info p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.info-icon {
+    color: #007bff;
+}
+
+/* Секция книг в виде сетки */
+.books-section {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.books-section h2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.section-icon {
+    color: #007bff;
+}
+
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    justify-content: center;
+}
+
+.book-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    transition: transform 0.2s;
+}
+
+.book-item:hover {
+    transform: translateY(-3px);
+    background-color: #f8f9fa;
+}
+
+.no-books {
+    font-size: 16px;
+    color: #777;
+}
+
+.loading {
+    font-size: 18px;
+    color: #555;
+}
+
+/* Модальное окно */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 16px;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.cancel-button {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.cancel-button:hover {
+    background-color: #b02a37;
+}
+
+.save-button {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.save-button:hover {
+    background-color: #218838;
 }

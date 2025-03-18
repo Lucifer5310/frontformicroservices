@@ -35,7 +35,7 @@ const AdminPage = () => {
                 <div className="button-grid">
                     <div className="button-row">
                         <button
-                            onClick={() => navigate('/admin/users')}
+                            onClick={() => navigate('/users')}
                             className="admin-button"
                         >
                             Пользователи

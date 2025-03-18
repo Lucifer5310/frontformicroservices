@@ -162,8 +162,7 @@ export const deleteBookById = (id) => internshipApi.delete(`/book/${id}`);
 //ClientApi
 export const findAllClient = () => internshipApi.get('/client');
 export const findClientById = (id) => internshipApi.get(`/client/${id}`);
-export const addOneClient = () => internshipApi.post('/client');
-export const replaceClient = (id) => internshipApi.put(`/client/${id}`);
+export const replaceClient = (id, formData) => internshipApi.put(`/client/${id}`, formData);
 export const deleteClient = (id) => internshipApi.delete(`/client/${id}`);
 
 //UserApi
