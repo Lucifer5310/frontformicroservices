@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { findClientById, replaceClient } from '../api'; // Добавляем replaceClient
-import { FaUser, FaEnvelope, FaBook, FaEdit } from 'react-icons/fa'; // Иконки
+import { findClientById, replaceClient, deleteClient } from '../api';
+import { FaUser, FaEnvelope, FaBook, FaEdit, FaTrash } from 'react-icons/fa';
 import '../styles/RoomPage.css';
 
 const RoomPage = () => {
@@ -9,7 +9,7 @@ const RoomPage = () => {
     const { id } = useParams();
     const [clientData, setClientData] = useState(null);
     const userRole = localStorage.getItem('userRole');
-    const [isModalOpen, setIsModalOpen] = useState(false); // Состояние для модального окна
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
         middleName: '',
@@ -21,7 +21,6 @@ const RoomPage = () => {
         findClientById(id)
             .then((response) => {
                 setClientData(response.data);
-                // Предзаполняем форму данными клиента при загрузке
                 setFormData({
                     firstName: response.data.firstName,
                     middleName: response.data.middleName,
@@ -65,16 +64,32 @@ const RoomPage = () => {
 
     const handleSave = async () => {
         try {
-            await replaceClient(id, formData); // Отправляем POST-запрос на /client/{id}
-            // После успешного сохранения обновляем данные и закрываем модальное окно
+            await replaceClient(id, formData);
             const response = await findClientById(id);
             setClientData(response.data);
             setIsModalOpen(false);
-            // Перезагружаем страницу
             window.location.reload();
         } catch (error) {
             console.error('Ошибка сохранения данных:', error);
             alert('Не удалось сохранить изменения. Попробуйте снова.');
+        }
+    };
+
+    const handleDeleteAccount = async () => {
+        if (clientData.bookNameList.length > 0) {
+            alert('Вы не можете удалить аккаунт, так как у вас есть книги, которые нужно вернуть. Пожалуйста, верните книги.');
+            return;
+        }
+
+        if (window.confirm('Вы уверены, что хотите удалить аккаунт? Это действие нельзя отменить.')) {
+            try {
+                await deleteClient(id);
+                localStorage.clear();
+                navigate('/');
+            } catch (error) {
+                console.error('Ошибка удаления аккаунта:', error);
+                alert('Не удалось удалить аккаунт. Попробуйте снова.');
+            }
         }
     };
 
@@ -100,7 +115,7 @@ const RoomPage = () => {
             <main className="main-content">
                 {clientData ? (
                     <>
-                        {/* Карточка клиента без кнопки "Изменить" */}
+                        {/* Карточка клиента */}
                         <div className="client-card">
                             <h1 className="client-name">
                                 {clientData.firstName} {clientData.middleName}
@@ -115,11 +130,16 @@ const RoomPage = () => {
                             </div>
                         </div>
 
-                        {/* Кнопка "Изменить" вне карточки */}
+                        {/* Секция с кнопками "Изменить" и "Удалить аккаунт" */}
                         <div className="edit-section">
                             <button onClick={openModal} className="edit-button">
                                 <FaEdit /> Изменить
                             </button>
+                            {userRole === 'ROLE_USER' && (
+                                <button onClick={handleDeleteAccount} className="delete-button10">
+                                    <FaTrash /> Удалить аккаунт
+                                </button>
+                            )}
                         </div>
 
                         {/* Список книг в виде сетки */}

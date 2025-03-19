@@ -41,10 +41,10 @@ const AdminPage = () => {
                             Пользователи
                         </button>
                         <button
-                            onClick={() => navigate('/client')}
+                            onClick={() => navigate('/images')}
                             className="admin-button"
                         >
-                            Клиенты
+                            Обложки
                         </button>
                     </div>
                     <div className="button-row">
@@ -73,14 +73,6 @@ const AdminPage = () => {
                             className="admin-button"
                         >
                             Полки
-                        </button>
-                    </div>
-                    <div className="button-row">
-                        <button
-                            onClick={() => navigate('/images')}
-                            className="admin-button1"
-                        >
-                            Галерея обложек
                         </button>
                     </div>
                 </div>

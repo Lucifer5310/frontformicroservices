@@ -9,6 +9,7 @@ import ImagesPage from "./pages/ImagesPage";
 import BookPage from "./pages/BookPage";
 import ShelfPage from "./pages/ShelfPage";
 import Bookcase from "./pages/Bookcase";
+import UsersPage from "./pages/UsersPage";
 
 function App() {
     return (
@@ -18,8 +19,7 @@ function App() {
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/client/:id" element={<RoomPage />} />
                 <Route path="/admin" element={<AdminPage />} />
-                <Route path="/users" element={<div>Пользователи (в разработке)</div>} />
-                <Route path="/client" element={<div>Клиенты (в разработке)</div>} />
+                <Route path="/users" element={<UsersPage />} />
                 <Route path="/bookcase" element={<Bookcase />} />
                 <Route path="/shelf" element={<ShelfPage />} />
                 <Route path="/book" element={<BookPage />} />

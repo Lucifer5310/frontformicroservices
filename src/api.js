@@ -132,10 +132,6 @@ internshipApi.interceptors.response.use(
     }
 );
 
-//Auth
-export const signUp = () => internshipApi.post('/auth/sign-up');
-export const signIn = () => internshipApi.post('/auth/sign-in');
-
 //Author API
 export const findAllAuthor = () => internshipApi.get('/author');
 export const findAllAuthorName = () => internshipApi.get('/author/list');
@@ -160,15 +156,14 @@ export const updateBook = (id, bookData) => internshipApi.put(`/book/${id}`, boo
 export const deleteBookById = (id) => internshipApi.delete(`/book/${id}`);
 
 //ClientApi
-export const findAllClient = () => internshipApi.get('/client');
 export const findClientById = (id) => internshipApi.get(`/client/${id}`);
 export const replaceClient = (id, formData) => internshipApi.put(`/client/${id}`, formData);
 export const deleteClient = (id) => internshipApi.delete(`/client/${id}`);
 
 //UserApi
 export const findAllUsers = () => internshipApi.get('/users');
-export const replaceUser = (id) => internshipApi.put(`/users/${id}`);
-export const deleteUser = (id) => internshipApi.delete(`/users/${id}`);
+export const findRoleById = (id) => internshipApi.get(`/users/${id}`);
+export const replaceUser = (id, updatedUserData) => internshipApi.put(`/users/${id}`, updatedUserData);
 
 //ShelfApi
 export const findAllShelf = () => internshipApi.get('/shelf');

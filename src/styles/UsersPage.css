@@ -1,4 +1,4 @@
-.room-page {
+.users-page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -50,147 +50,67 @@
     padding: 40px;
 }
 
-/* Карточка клиента */
-.client-card {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 100%;
-    max-width: 500px;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.client-name {
-    margin: 0;
+.main-content h1 {
+    margin-bottom: 30px;
     color: #333;
     font-size: 32px;
     font-weight: bold;
 }
 
-.client-info {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* Таблица пользователей */
+.users-table {
+    width: 100%;
+    max-width: 1200px;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-.client-info p {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0;
+.users-table th,
+.users-table td {
+    padding: 15px;
+    text-align: left;
     font-size: 16px;
-    color: #555;
+    color: #333;
 }
 
-.info-icon {
-    color: #007bff;
+.users-table th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
 }
 
-/* Секция кнопок "Изменить" и "Удалить аккаунт" */
-.edit-section {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    margin-bottom: 30px;
+.users-table tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.users-table tr:hover {
+    background-color: #e9ecef;
 }
 
 .edit-button {
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 8px 16px;
+    padding: 6px 12px;
     font-size: 14px;
     color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.delete-button10 {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 8px 16px;
-    font-size: 14px;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.edit-button {
     background-color: #17a2b8;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .edit-button:hover {
     background-color: #138496;
 }
 
-.delete-button10 {
-    background-color: #dc3545;
-}
-
-.delete-button10:hover {
-    background-color: #b02a37;
-}
-
-/* Секция книг в виде сетки */
-.books-section {
-    width: 100%;
-    max-width: 800px;
-    text-align: center;
-}
-
-.books-section h2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 24px;
-}
-
-.section-icon {
-    color: #007bff;
-}
-
-.book-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-    justify-content: center;
-}
-
-.book-item {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
-    transition: transform 0.2s;
-}
-
-.book-item:hover {
-    transform: translateY(-3px);
-    background-color: #f8f9fa;
-}
-
-.no-books {
+.no-users {
     font-size: 16px;
     color: #777;
-}
-
-.loading {
-    font-size: 18px;
-    color: #555;
 }
 
 /* Модальное окно */
@@ -234,7 +154,7 @@
     color: #555;
 }
 
-.form-group input {
+.role-select {
     width: 100%;
     padding: 8px;
     font-size: 14px;
